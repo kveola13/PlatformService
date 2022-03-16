@@ -23,6 +23,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+Console.WriteLine($"Attempting to connect to {app.Configuration["CommandService"]}");
 
 app.UseHttpsRedirection();
 
