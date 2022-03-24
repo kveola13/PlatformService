@@ -15,7 +15,10 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("PlatformsConn")));
-
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("PlatformsConn")));
+}
 
 var app = builder.Build();
 
@@ -25,9 +28,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-//else
-//{
-//}
 
 Console.WriteLine($"Attempting to connect to {app.Configuration["CommandService"]}");
 
@@ -37,6 +37,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//PrepDb.PrepPopulation(app, app.Environment.IsProduction());
+PrepDb.PrepPopulation(app, app.Environment.IsProduction());
 
 app.Run();
